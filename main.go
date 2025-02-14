@@ -19,7 +19,7 @@ import (
 
 const (
 	appName    = "fxp"
-	appVersion = "v0.2.0"
+	appVersion = "v0.2.1"
 
 	defaultConnectionTimeout  = time.Second * 5
 	defaultFxpTransferTimeout = time.Minute * 10
