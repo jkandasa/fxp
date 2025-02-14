@@ -255,17 +255,6 @@ func transferFileFXP(source, dest *ftp.ServerConn, filename string) error {
 	isSourceDone := false
 	isDestDone := false
 	for {
-		if !isSourceDone {
-			msg, err := source.GetConn().ReadLine()
-			if err != nil {
-				logger.Printf("error on receiving message from source, error:%s\n", err.Error())
-			}
-			if strings.Contains(msg, "226") {
-				isSourceDone = true
-			} else if !strings.Contains(msg, "150") {
-				return errors.New(msg)
-			}
-		}
 
 		if !isDestDone {
 			msg, err := dest.GetConn().ReadLine()
@@ -274,6 +263,18 @@ func transferFileFXP(source, dest *ftp.ServerConn, filename string) error {
 			}
 			if strings.Contains(msg, "226") {
 				isDestDone = true
+			} else if !strings.Contains(msg, "150") {
+				return errors.New(msg)
+			}
+		}
+
+		if !isSourceDone {
+			msg, err := source.GetConn().ReadLine()
+			if err != nil {
+				logger.Printf("error on receiving message from source, error:%s\n", err.Error())
+			}
+			if strings.Contains(msg, "226") {
+				isSourceDone = true
 			} else if !strings.Contains(msg, "150") {
 				return errors.New(msg)
 			}
